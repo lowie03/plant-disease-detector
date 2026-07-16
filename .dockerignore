@@ -1,0 +1,13 @@
+# Only backend files should be in the Docker image
+frontend/
+.git/
+.venv/
+.vscode/
+__pycache__/
+*.pyc
+notebooks/
+data/
+checkpoints/
+best_model.pt
+README.md
+docker-compose.yml
