@@ -9,7 +9,9 @@ import Disclaimer from './components/Disclaimer'
 import { predictDisease } from './api/predict'
 
 export default function App() {
-  const [apiUrl, setApiUrl] = useState('http://127.0.0.1:8000')
+  const [apiUrl, setApiUrl] = useState(
+  import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
+  )
   const [rawFile, setRawFile] = useState(null)
   const [file, setFile] = useState(null)
   const [loading, setLoading] = useState(false)
