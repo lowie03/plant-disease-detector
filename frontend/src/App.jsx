@@ -16,6 +16,7 @@ export default function App() {
   const [file, setFile] = useState(null)
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
+  const [wakingUp, setWakingUp] = useState(false)
 
   // Derive preview URLs from their source files; only the cleanup is a side effect.
   const rawPreviewUrl = useMemo(() => (rawFile ? URL.createObjectURL(rawFile) : null), [rawFile])
@@ -55,6 +56,7 @@ export default function App() {
     if (!file) return
     setLoading(true)
     setResult(null)
+    const wakeupTimer = setTimeout(() => setWakingUp(true), 3000)
     try {
       const res = await predictDisease(apiUrl, file)
       setResult(res)
@@ -64,6 +66,8 @@ export default function App() {
         message: err.message || 'Network error. Is the API running?'
       })
     } finally {
+      clearTimeout(wakeupTimer)
+      setWakingUp(false)
       setLoading(false)
     }
   }
@@ -92,6 +96,11 @@ export default function App() {
           disabled={!file || !!rawFile}
           loading={loading}
         />
+        {wakingUp && (
+          <p className="text-center text-xs text-slate-500 mt-2">
+            Waking up the server (this only happens once)...
+          </p>
+        )}
         <ResultPanel result={result} />
         <Disclaimer />
       </div>
